@@ -1,5 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common import keys
+
 import time
 import unittest
 
@@ -23,9 +24,9 @@ class NewVisitorTest(unittest.TestCase):
 
 
         # She is invited to enter a to-do item straight away
-        input_box = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
-                input_box.get_attribute('placeholder'),
+                inputbox.get_attribute('placeholder'),
                 'Enter a to-do item')
 
         # She types "Buy peacock feathers" into a text box (Edith's hobby
@@ -34,7 +35,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # When she hits enter, the page updates, and now the page lists
         # "1: Buy peacock feathers" as an item in a to-do list
-        input_box.send_keys(keys.ENTER)
+        inputbox.send_keys(keys.ENTER)
         time.sleep(1)
 
         table = self.browser.find_element_by_id('id_list_table')
