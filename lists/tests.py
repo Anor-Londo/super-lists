@@ -25,7 +25,7 @@ class SmokeTest(TestCase):
     def test_can_redirect_a_POST_request(self):
         responce = self.client.post('/', data={'item_text': 'A new list item'})
         self.assertEqual(responce.status_code, 302)
-        self.assertEqual(responce['location'], '/')
+        self.assertEqual(responce['location'], '/lists/the-only-list-in-the-world/')
 
 class ItemModelTest(TestCase):
 
@@ -52,11 +52,17 @@ class HomePageTest(TestCase):
         self.client.get('/')
         self.assertEqual(Item.objects.count(), 0)
 
+
+class ListViewTest(TestCase):
+    def test_uses_list_template(self):
+        responce = self.client.get('/lists/the-only-list-in-the-world/')
+        self.assertTemplateUsed(responce, 'list.html')
+
     def test_display_all_list_items(self):
         Item.objects.create(text='Item_1')
         Item.objects.create(text='Item_2')
 
-        responce = self.client.get('/')
+        responce = self.client.get('/lists/the-only-list-in-the-world/')
 
-        self.assertIn('Item_1', responce.content.decode())
-        self.assertIn('Item_2', responce.content.decode())
+        self.assertContains(responce, 'Item_1')
+        self.assertContains(responce, 'Item_2')
